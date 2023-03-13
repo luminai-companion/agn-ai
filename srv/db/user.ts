@@ -52,6 +52,16 @@ export async function updateProfile(userId: string, props: Partial<AppSchema.Pro
   return getProfile(userId)
 }
 
+export async function deleteUser(userId: string) {
+  const chats = await db('chat').find({ userId }).toArray()
+  await db('chat-message').deleteMany({ chatId: { $in: chats.map((c) => c._id) } })
+  await db('chat').deleteMany({ userId })
+  await db('character').deleteMany({ userId })
+  await db('gen-setting').deleteMany({ userId })
+  await db('profile').deleteMany({ userId })
+  await db('user').deleteOne({ _id: userId })
+}
+
 export async function authenticate(username: string, password: string) {
   const user = await db('user').findOne({ kind: 'user', username: username.toLowerCase() })
   if (!user) return

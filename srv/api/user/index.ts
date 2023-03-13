@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { loggedIn } from '../auth'
 import { changePassword, login, register } from './auth'
+import { deleteUserAccount } from './delete-user'
 import { createUserPreset, getUserPresets, updateUserPreset } from './presets'
 import {
   deleteHordeKey,
@@ -29,5 +30,6 @@ router.post('/config', loggedIn, updateConfig)
 router.post('/profile', loggedIn, updateProfile)
 router.post('/presets', loggedIn, createUserPreset)
 router.post('/presets/:id', loggedIn, updateUserPreset)
+router.delete('/account', loggedIn, deleteUserAccount)
 
 export default router
